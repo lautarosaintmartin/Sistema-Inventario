@@ -1,0 +1,11 @@
+---
+import Layout from "@layouts/layout.astro";
+import Tabla from "@components/provider/Tabla.svelte";
+import { providerModel } from "@components/provider/provider.svelte";
+---
+
+<Layout page="Proveedor">
+    <h1 class="text-2xl text-slate-900 font-bold dark:text-white">Proveedores</h1>
+    {console.log(providerModel)}
+    <Tabla client:visible />
+</Layout>

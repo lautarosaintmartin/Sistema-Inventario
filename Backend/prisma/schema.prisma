@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum MovementType{
+  IN
+  OUT
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  fullname String @db.VarChar(255)
+  email String @unique @db.VarChar(255)
+  password String @db.Text()
+  role Role @default(USER)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updateAt DateTime @updatedAt @db.Timestamptz(3)
+
+  movements Movement[]
+
+  @@index([id])
+  @@index([email])
+  @@map("users")
+}
+
+model Category{
+  id Int @id @default(autoincrement())
+  name String @unique @db.VarChar(255)
+  
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updateAt DateTime @updatedAt @db.Timestamptz(3)
+
+  products Products[]
+}
+
+model Products{
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(255)
+  precioUnitario Decimal @db.Decimal(10, 2)
+  stock Int
+  id_categoria Int
+  id_provider Int?
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updateAt DateTime @updatedAt @db.Timestamptz(3)
+
+  movements Movement[]
+
+  provider    Providers? @relation(fields: [id_provider], references: [id])
+  categoria Category @relation(fields: [id_categoria], references: [id])
+
+  @@index([id])
+  @@map("products")
+}
+
+model Providers{
+    id Int @id @default(autoincrement())
+    name String @db.VarChar(255)
+    email String @unique @db.VarChar(255)
+    phone String @db.VarChar(255)
+    isActive Boolean @default(true)
+
+
+    createdAt DateTime @default(now()) @db.Timestamptz(3)
+    updateAt DateTime @updatedAt @db.Timestamptz(3)
+
+    products Products[]
+
+    @@index([id])
+    @@map("providers")
+}
+
+model Movement {
+  id Int @id @default(autoincrement())
+  type MovementType @default(IN)
+  date DateTime @default(now()) @db.Timestamptz(3)
+  amount Int @default(0)
+  priceUnit Decimal @db.Decimal(10, 2)
+
+  productId Int?
+  product Products? @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+}

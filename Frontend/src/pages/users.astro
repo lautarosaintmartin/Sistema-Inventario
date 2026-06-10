@@ -1,0 +1,11 @@
+---
+import Layout from "@layouts/layout.astro";
+import Tabla from "@components/users/Tabla.svelte";
+import { userModel } from "@components/users/user.svelte";
+---
+
+<Layout page="Usuario">
+    <h1 class="text-2xl text-slate-900 font-bold dark:text-white">Usuarios</h1>
+    {console.log(userModel)}
+    <Tabla client:visible />
+</Layout>

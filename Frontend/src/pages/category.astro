@@ -1,0 +1,10 @@
+---
+import Layout from "@layouts/layout.astro"
+import Tabla from "@components/category/Tabla.svelte";
+---
+
+<Layout page="Categorias">
+    <h1 class = "text-2xl text-slate-900 font-bold dark:text-white"> Categorias</h1>
+        
+    <Tabla client:visible />
+</Layout>

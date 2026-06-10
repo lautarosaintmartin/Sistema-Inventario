@@ -1,0 +1,18 @@
+import { Type } from "class-transformer"
+import { IsString, Length, MinLength } from "class-validator"
+import { IsEmail, IsNumber} from "class-validator"
+
+export class CreateUserDto {
+
+    @IsString({message: 'El nombre debe ser texto.'})
+    @Length(6, 255, { message: 'El nombre debe tener al menos 6 caracteres.' })
+    fullname!: string
+
+    @IsEmail({}, { message: 'El correo debe ser válido.'})
+    @Length(6, 255, { message: 'El email debe tener al menos 6 caracteres.' })
+    email!: string
+
+    @IsString({ message: 'La contraseña debe ser texto.'})
+    @MinLength(6, { message: 'La contraseña debe tener al menos 6 caracteres.'})
+    password!: string
+}

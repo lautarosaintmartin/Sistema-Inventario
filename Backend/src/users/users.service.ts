@@ -1,0 +1,119 @@
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { PrismaService } from '../prisma/prisma.service';
+import { hashSync } from 'bcrypt'
+
+@Injectable()
+export class UsersService {
+
+  constructor(private prismaService: PrismaService) { }
+
+  async create(createUserDto: CreateUserDto) {
+
+    try {
+
+      //Validar que el correo exista
+
+      const existingUser = await this.prismaService.user.findUnique(
+        {
+          where: {
+            email: createUserDto.email,
+          }
+        })
+
+      if (existingUser) {
+        throw new ConflictException('El correo electrónico ya está en uso.')
+      }
+
+      return await this.prismaService.user.create({
+        data: {
+          ...createUserDto,
+          password: hashSync(createUserDto.password, 10)
+        }
+      })
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  async findAll() {
+    try {
+      const users = await this.prismaService.user.findMany({
+        orderBy: {
+          fullname: "asc",
+        },
+      });
+     
+      return users
+      // return await this.prismaService.user.findMany();
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  async findOne(id: number) {
+    try {
+      return await this.prismaService.user.findUnique(
+        {
+          where: {
+            id: id
+          }
+        }
+      );
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const user = await this.findOne(id)
+
+    try {
+
+      if (!user) {
+        throw new NotFoundException('User not found')
+      }
+
+      //Validar que el correo exista
+
+      const existingUser = await this.prismaService.user.findUnique(
+        {
+          where: {
+            email: updateUserDto.email,
+          }
+        })
+
+      if (existingUser && existingUser.id !== id) {
+        throw new ConflictException('El correo electrónico ya está en uso.')
+      }
+
+      return await this.prismaService.user.update({
+        where: {
+          id,
+        },
+        data: updateUserDto
+
+      })
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  async remove(id: number) {
+    try {
+      return await this.prismaService.user.delete({
+        where: {
+          id,
+        }
+      })
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+}

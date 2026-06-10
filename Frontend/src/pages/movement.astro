@@ -1,0 +1,11 @@
+---
+import Layout from "@layouts/layout.astro";
+import Tabla from "@components/movements/Tabla.svelte";
+import { movementModel } from "@components/movements/movement.svelte";
+---
+
+<Layout page="Usuario">
+    <h1 class="text-2xl text-slate-900 font-bold dark:text-white">Movimientos</h1>
+    {console.log(movementModel)}
+    <Tabla client:visible />
+</Layout>

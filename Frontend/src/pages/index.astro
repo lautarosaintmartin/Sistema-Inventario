@@ -1,0 +1,10 @@
+---
+import Cards from "@components/dashboard/cards.svelte"
+import Layout from "@layouts/layout.astro"
+---
+
+<Layout page="Dashboard">
+    <h1 class = "p-4 text-2xl text-slate-900 font-bold dark:text-white"> Dashboard</h1>
+
+    <Cards client:visible transition:persist/>
+</Layout>
