@@ -41,12 +41,14 @@ export class FetchAdapter implements HttpAdapter {
       headers['Authorization'] = `Bearer ${token}`;
     }
 
-    const response = await fetch(url, {
+    const response = await window.fetch(url.toString(), {
       method,
       headers,
       // credentials: 'include', // 🔥 CLAVE PARA COOKIES
       body: body ? JSON.stringify(body) : undefined,
     });
+
+    console.log(response)
 
     if (!response.ok) {
       throw await response.json();

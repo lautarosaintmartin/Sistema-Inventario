@@ -29,11 +29,6 @@
                         {/each}
                     </select>
 
-                    {#if movementModel.messageError?.type}
-                        <p class="text-red-600 text-sm mt-1">
-                            {movementModel.messageError.type}
-                        </p>
-                    {/if}
                 </div>
 
                 <div class="p-2 flex flex-col">
@@ -64,11 +59,6 @@
                         value={movementModel.movement?.amount}
                     />
 
-                    {#if movementModel.messageError?.amount}
-                        <p class="text-red-600 text-sm mt-1">
-                            {movementModel.messageError.amount}
-                        </p>
-                    {/if}
                 </div>
 
                 <div class="p-2 flex flex-col">
@@ -82,11 +72,6 @@
                         value={movementModel.movement?.priceUnit}
                     />
 
-                    {#if movementModel.messageError?.priceUnit}
-                        <p class="text-red-600 text-sm mt-1">
-                            {movementModel.messageError.priceUnit}
-                        </p>
-                    {/if}
                 </div>
 
                 <div class="p-2 flex flex-col">

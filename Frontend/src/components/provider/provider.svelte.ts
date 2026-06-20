@@ -1,4 +1,5 @@
 import { http } from '@core/http'
+import { handleErrorToast } from '@core/utils/toast'
 
 interface Provider {
     id: number
@@ -13,7 +14,6 @@ class ProviderModel {
     createDialog = $state(false)
     editDialog = $state(false)
     deleteDialog = $state(false)
-    messageError = $state({ name: '', email: '', phone: '' })
 
 
     async getProvider() {
@@ -36,14 +36,13 @@ class ProviderModel {
             this.getProvider()
             this.editDialog = false
 
-        } catch (error: any) {
-            this.messageError = error
+        } catch (error) {
+            handleErrorToast(error)
         }
     }
 
     async createProvider(e: Event){
         try{
-            this.messageError = { name: '', email: '', phone: '' }
 
             e.preventDefault()
             const formData = new FormData(e.target as HTMLFormElement)
@@ -53,15 +52,14 @@ class ProviderModel {
             this.getProvider()
             this.createDialog = false
 
-        }catch(error: any){
-            this.messageError = error
+        }catch(error){ 
+            handleErrorToast(error)
         }
     }
 
     showCreateModal(){
         this.provider = null
         this.createDialog = true
-        this.messageError = {name: '', email: '', phone: ''}
     }
 
     showEditModal(provider: Provider){

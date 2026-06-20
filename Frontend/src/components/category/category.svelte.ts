@@ -1,4 +1,6 @@
 import { http } from '@core/http'
+import type { ResponseData, Pagination } from "@core/interfaces/response"
+import { handleErrorToast } from '@core/utils/toast'
 
 export interface Category {
     id: number
@@ -12,15 +14,21 @@ class CategoryModel {
     deleteDialog = $state(false)
     editDialog = $state(false)
     createDialog = $state(false)
-    messageError = $state({ name: '' })
-
+    pagination = $state<Pagination | null>(null)
+    query = $state<Pick<Pagination, 'page' | 'limit'>>({
+        page: 1,
+        limit: 5,
+    })
 
     async getCategory() {
-        this.categories = await http.get(`${import.meta.env.PUBLIC_API_URL}/categories`)
+        const res: any = await http.get(`${import.meta.env.PUBLIC_API_URL}/categories?page=${this.query.page}&limit=${this.query.limit}`);
+
+        this.categories = res.data
+        this.pagination = res.pagination
     }
 
     async createCategory(e: Event) {
-       try{
+        try {
             e.preventDefault()
             const formData = new FormData(e.target as HTMLFormElement)
             const data = Object.fromEntries(formData)
@@ -30,10 +38,9 @@ class CategoryModel {
             this.getCategory()
             this.createDialog = false
 
-       }catch(error: any){
-            console.log(error)
-            this.messageError = error
-       }
+        } catch (error) {
+            handleErrorToast(error)
+        }
     }
 
     async deleteCategory(id: number) {
@@ -44,13 +51,12 @@ class CategoryModel {
             await this.getCategory()
             this.deleteDialog = false
         } catch (error) {
-            console.log(error)
-            throw error
+            handleErrorToast(error)
         }
     }
 
     async editCategory(id: number, e: Event) {
-        try{
+        try {
             e.preventDefault();
             const formData = new FormData(e.target as HTMLFormElement)
             const data = Object.fromEntries(formData)
@@ -60,15 +66,28 @@ class CategoryModel {
 
             this.getCategory();
             this.editDialog = false;
-        }catch(error: any){
-            this.messageError = error
+        } catch (error) {
+            handleErrorToast(error)
         }
     }
+
+    async nextPage(){
+        if (!this.pagination ) return
+        this.query.page++
+        await this.getCategory()
+    }
+
+    async previousPage(){
+        if (this.query.page <= 1) return
+        this.query.page--
+        await this.getCategory()
+    }
+
+
 
     showCreateModal() {
         this.category = null
         this.createDialog = true
-        this.messageError = { name: '' }
     }
 
     showDeleteModal(category: Category) {
@@ -79,7 +98,6 @@ class CategoryModel {
     showEditModal(cateogry: Category) {
         this.category = cateogry
         this.editDialog = true
-        this.messageError = { name: '' }
     }
 }
 

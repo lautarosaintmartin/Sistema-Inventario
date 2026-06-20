@@ -1,4 +1,5 @@
 import { http } from '@core/http'
+import { handleErrorToast } from '@core/utils/toast';
 
 interface User
 {
@@ -14,7 +15,6 @@ class UserModel
     deleteDialog = $state(false)
     editDialog = $state(false)
     createDialog = $state(false)
-    messageError = $state({ fullname: '', email: '', password: '' })
 
     async getUsers()
     {
@@ -38,8 +38,8 @@ class UserModel
             await http.patch(`${import.meta.env.PUBLIC_API_URL}/users/${id}`, data);
             this.getUsers();
             this.editDialog = false;
-        }catch(error: any){
-            this.messageError = error
+        }catch(error){
+            handleErrorToast(error)
         }
     }
 
@@ -52,15 +52,14 @@ class UserModel
             await http.post<User>(`${import.meta.env.PUBLIC_API_URL}/users`, data)
             this.getUsers()
             this.createDialog = false
-        }catch(error: any){
-            this.messageError = error
+        }catch(error){
+          handleErrorToast(error)
         }
     }
 
     showCreateModal(){
         this.user = null
         this.createDialog = true
-        this.messageError = { fullname: '', email: '', password: '' }
     }
 
     showEditModal(user:User)

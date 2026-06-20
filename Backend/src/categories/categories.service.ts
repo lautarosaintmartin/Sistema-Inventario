@@ -2,6 +2,10 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { PrismaService } from '../prisma/prisma.service';
+import { PaginationDto } from '../commons/pagination.dto';
+
+const DEFAULT_LIMIT = 5
+const DEFAULT_PAGE = 1
 
 @Injectable()
 export class CategoriesService {
@@ -31,16 +35,30 @@ export class CategoriesService {
     }
   }
 
-  async findAll() {
+  async findAll(paginationDto: PaginationDto) {
     try{
+
+      const count = await this.prismaService.category.count()
       const categories = await this.prismaService.category.findMany({
         orderBy: {
           name: "asc",
         },
+        skip: (paginationDto.page || DEFAULT_PAGE) * (paginationDto.limit || DEFAULT_LIMIT) - (paginationDto.limit || DEFAULT_LIMIT),
+        take: paginationDto.limit || DEFAULT_LIMIT,
       })
 
       // return await this.prismaService.category.findMany()
-      return categories
+      return {
+        data: categories,
+        pagination: {
+          totalItems: count,
+          page: paginationDto.page || DEFAULT_PAGE,
+          limit: paginationDto.limit || DEFAULT_LIMIT,
+          totalPages: Math.ceil(count / (paginationDto.limit || DEFAULT_LIMIT)),
+          nextPage: paginationDto.page || DEFAULT_PAGE + 1,
+          previousPage: paginationDto.page || DEFAULT_PAGE - 1,
+        }
+      }
     }catch(error){
       console.log(error)
       throw error

@@ -19,10 +19,6 @@
                         id ={`name`}
                     />
 
-                    {#if providerModel.messageError?.name}
-                        <p class="text-red-600">{providerModel.messageError.name}</p>
-                    {/if}
-
                 </div>
 
                 <div class="p-2 flex flex-col">
@@ -33,11 +29,6 @@
                         name="email"
                         id={`email`}
                     />
-
-                    {#if providerModel.messageError?.email}
-                        <p class="text-red-600">{providerModel.messageError.email}</p>
-                    {/if}
-
                 </div>
 
                   <div class="p-2 flex flex-col">
@@ -48,11 +39,6 @@
                         name="phone"
                         id={`phone`}
                     />
-
-                    {#if providerModel.messageError?.phone}
-                        <p class="text-red-600">{providerModel.messageError.phone}</p>
-                    {/if}
-
                 </div>
 
                 <div class="p-2 flex justify-end gap-2 mt-3">

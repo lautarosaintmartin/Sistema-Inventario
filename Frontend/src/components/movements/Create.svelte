@@ -31,11 +31,6 @@
                             {/each}
                         </select>
 
-                        {#if movementModel.messageError?.type}
-                            <p class="text-red-600">
-                                {movementModel.messageError.type}
-                            </p>
-                        {/if}
                     </div>
 
                     <div class="p-2 flex flex-col">
@@ -50,11 +45,6 @@
                             )}
                         />
 
-                        {#if movementModel.messageError?.date}
-                            <p class="text-red-600">
-                                {movementModel.messageError.date}
-                            </p>
-                        {/if}
                     </div>
 
                     <div class="p-2 flex flex-col">
@@ -67,11 +57,6 @@
                             id={`amount`}
                         />
 
-                        {#if movementModel.messageError?.amount}
-                            <p class="text-red-600">
-                                {movementModel.messageError.amount}
-                            </p>
-                        {/if}
                     </div>
 
                     <div class="p-2 flex flex-col">
@@ -84,12 +69,6 @@
                             step="0.01"
                             id={`priceUnit-${id}`}
                         />
-
-                        {#if movementModel.messageError?.priceUnit}
-                            <p class="text-red-600">
-                                {movementModel.messageError.priceUnit}
-                            </p>
-                        {/if}
                     </div>
 
                     <div class="p-2 flex flex-col">

@@ -6,11 +6,13 @@
     import Create from "@components/movements/Create.svelte";
     import { userModel } from "@components/users/user.svelte";
     import { categoryModel } from "@components/category/category.svelte";
+    import { productModel } from "@components/product/product.svelte";
 
     onMount(async () => {
         await movementModel.getMovements()
         await userModel.getUsers()
         await categoryModel.getCategory()
+        await productModel.getProduct()
     });
 </script>
 

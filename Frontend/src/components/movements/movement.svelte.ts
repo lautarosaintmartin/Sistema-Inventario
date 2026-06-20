@@ -1,4 +1,5 @@
 import { http } from '@core/http'
+import { handleErrorToast } from '@core/utils/toast'
 
 export enum MovementType {
     IN = 'IN',
@@ -23,7 +24,6 @@ class MovementModel
     deleteDialog = $state(false)
     editDialog = $state(false)
     createDialog = $state(false)
-    messageError = $state({ type: '', date: '', amount: '', priceUnit: '' })
 
     async getMovements()
     {
@@ -47,8 +47,8 @@ class MovementModel
             await http.patch(`${import.meta.env.PUBLIC_API_URL}/movements/${id}`, data);
             this.getMovements();
             this.editDialog = false;
-        }catch(error: any){
-            this.messageError = error
+        }catch(error){
+            handleErrorToast(error)
         }
     }
 
@@ -66,22 +66,20 @@ class MovementModel
             await http.post<Movement>(`${import.meta.env.PUBLIC_API_URL}/movements`, data)
             this.getMovements()
             this.createDialog = false
-        }catch(error: any){
-            this.messageError = error
+        }catch(error){
+            handleErrorToast(error)
         }
     }
 
     showCreateModal(){
         this.movement = null
         this.createDialog = true
-        this.messageError = { type: '', date: '', amount: '', priceUnit: '' }
     }
 
     showEditModal(movement: Movement)
     {
         this.movement = movement
         this.editDialog = true
-        this.messageError = { type: '', date: '', amount: '', priceUnit: '' }
     }
 
     showDeleteModal(movement: Movement){

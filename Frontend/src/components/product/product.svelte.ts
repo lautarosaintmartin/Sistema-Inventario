@@ -1,5 +1,6 @@
 import { http } from '@core/http'
 import type { Category } from '@components/category/category.svelte'
+import { handleErrorToast } from '@core/utils/toast'
 
 interface Product {
     id: number
@@ -16,8 +17,6 @@ class ProductModel {
     deleteDialog = $state(false)
     editDialog = $state(false)
     createDialog = $state(false)
-    messageError = $state({ name: '', stock: '', precioUnitario: '', id_categoria: '' })
-
 
     async getProduct() {
         this.products = await http.get(`${import.meta.env.PUBLIC_API_URL}/products`)
@@ -33,10 +32,8 @@ class ProductModel {
             this.getProduct()
             this.createDialog = false
 
-        } catch (error: any) {
-            console.log(error)
-            this.messageError = error
-
+        } catch (error) {
+            handleErrorToast(error)
         }
     }
 
@@ -48,8 +45,7 @@ class ProductModel {
             await this.getProduct()
             this.deleteDialog = false
         } catch (error) {
-            console.log(error)
-            throw error
+            handleErrorToast(error)
         }
     }
 
@@ -63,8 +59,8 @@ class ProductModel {
 
             this.getProduct();
             this.editDialog = false;
-        } catch (error: any) {
-            this.messageError = error
+        } catch (error) {
+            handleErrorToast(error)
         }
     }
 
@@ -78,7 +74,6 @@ class ProductModel {
     showCreateModal() {
         this.product = null
         this.createDialog = true
-        this.messageError = { name: '', precioUnitario: '', stock: '', id_categoria: '' }
     }
 
     showDeleteModal(product: Product) {
@@ -89,7 +84,6 @@ class ProductModel {
     showEditModal(product: Product) {
         this.product = product
         this.editDialog = true
-        this.messageError = { name: '', precioUnitario: '', stock: '', id_categoria: '' }
     }
 }
 

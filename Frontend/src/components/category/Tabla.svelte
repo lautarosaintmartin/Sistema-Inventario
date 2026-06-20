@@ -4,6 +4,7 @@
     import Create from "./create.svelte";
     import Edit from "./edit.svelte";
     import Delete from "./delete.svelte";
+    import Pagination from "@components/common/Pagination.svelte";
 
    onMount(async () => {
         await categoryModel.getCategory() 
@@ -58,3 +59,5 @@
         {/each}
     </tbody>
 </table>
+
+<Pagination model={categoryModel} />

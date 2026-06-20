@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { BadRequestException, Logger, ValidationPipe } from "@nestjs/common";
+import { Logger, ValidationPipe } from "@nestjs/common";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,13 +14,6 @@ async function bootstrap() {
       whitelist: true,
       transform: true,
       forbidNonWhitelisted: true,
-      exceptionFactory: (errors) => {
-        const result = errors.reduce((acc, error) => {
-          acc[error.property] = Object.values(error.constraints ?? {})[0]
-          return acc
-        }, {} as Record<string, string>)
-        return new BadRequestException(result)
-      }
     })
   )
   await app.listen(process.env.PORT ?? 3000);

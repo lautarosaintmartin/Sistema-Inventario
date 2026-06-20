@@ -20,10 +20,6 @@
                         value={categoryModel.category?.name}
                     />
 
-                    {#if categoryModel.messageError?.name}
-                        <p class="text-red-600 text-sm mt-1">{categoryModel.messageError.name}</p>
-                    {/if}
-                    
                 </div>
 
                 <div class="p-2 flex justify-end gap-2 mt-3">

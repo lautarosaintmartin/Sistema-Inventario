@@ -25,10 +25,6 @@
                         name="name"
                         id="name"
                     />
-
-                    {#if productModel.messageError?.name}
-                        <p class="text-red-600 text-sm mt-1">{productModel.messageError.name}</p>
-                    {/if}
                     
                 </div>
 
@@ -40,9 +36,6 @@
                         name="stock"
                     />
 
-                    {#if productModel.messageError?.stock}
-                        <p class="text-red-600 text-sm mt-1">{productModel.messageError.stock}</p>
-                    {/if}
                 </div>
 
                  <div class="p-2 flex flex-col">
@@ -52,10 +45,6 @@
                         type="number"
                         name="precioUnitario"
                     />
-
-                    {#if productModel.messageError?.precioUnitario}
-                        <p class="text-red-600 text-sm mt-1">{productModel.messageError.precioUnitario}</p>
-                    {/if}
                 </div>
 
                  <div class="p-2 flex flex-col">
@@ -73,10 +62,6 @@
                             </option>
                         {/each}
                     </select>
-
-                    {#if productModel.messageError?.id_categoria}
-                        <p class="text-red-600 text-sm mt-1">{productModel.messageError.id_categoria}</p>
-                    {/if}
 
                 </div>
 
