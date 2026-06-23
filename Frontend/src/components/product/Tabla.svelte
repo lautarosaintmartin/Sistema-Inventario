@@ -38,7 +38,7 @@
     <tbody>
         {#each productModel.products as product}
              <tr class="odd:bg-gray-100 dark:odd:bg-gray-700">
-                <td class="px-2 py-1">{product.name}</td>
+                <td class="px-2 py-1 capitalize">{product.name}</td>
                 <td class="px-2 py-1">{product.stock}</td>
                 <td class="px-2 py-1">{product.categoria?.name}</td>
                 <td class="px-2 py-1">{productModel.formatPrice(product.precioUnitario)}</td>

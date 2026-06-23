@@ -35,7 +35,7 @@
     <tbody>
         {#each providerModel.providers as provider}
             <tr class="odd:bg-gray-100 dark:odd:bg-gray-700">
-                <td class="px-2 py-1">{provider.name}</td>
+                <td class="px-2 py-1 capitalize">{provider.name}</td>
                 <td class="px-2 py-1">{provider.email}</td>
                 <td class="px-2 py-1">{provider.phone}</td>
                 <td>

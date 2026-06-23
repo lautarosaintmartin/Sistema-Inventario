@@ -36,7 +36,7 @@
     <tbody>
         {#each categoryModel.categories as category}
              <tr class="odd:bg-gray-100 dark:odd:bg-gray-700">
-                <td class="px-2 py-1">{category.name}</td>
+                <td class="px-2 py-1 capitalize">{category.name}</td>
                 <td>
                     <div class="flex justify-end gap-2">
                         <button

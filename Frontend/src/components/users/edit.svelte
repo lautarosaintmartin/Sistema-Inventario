@@ -27,7 +27,7 @@
                     <label for="email">Correo Electronico</label>
                     <input
                         class="border border-gray-400 rounded-md p-2"
-                        type="email"
+                        type="text"
                         name="email"
                         id={`email-${id}`}
                         value={userModel.user.email}
