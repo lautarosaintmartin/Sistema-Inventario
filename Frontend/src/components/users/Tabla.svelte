@@ -4,6 +4,7 @@
     import Edit from "./edit.svelte";
     import { userModel } from "./user.svelte";
     import Create from "./create.svelte";
+    import Pagination from "@components/common/Pagination.svelte";
 
     onMount(async () => {
         await userModel.getUsers()
@@ -16,10 +17,10 @@
 
 <div class = "w-full flex justify-end mb-4">
     <button 
-        class = "bg-gray-800 text-xl text-white rounded-md px-2 py-1 border border-white"
+        class = "bg-gray-800  text-white rounded-md px-2 py-1 border border-white"
         onclick={(e) => userModel.showCreateModal()}
     >
-        ➕
+        Agregar Usuario
     </button>
 </div>
 
@@ -41,16 +42,16 @@
                         <button
                             onclick={() => ((userModel.showEditModal(user)))}
                             aria-label="Editar"
-                            class="bg-gray-800 text-white px-3 py-2 rounded-md my-1"
+                            class="bg-gray-800 text-white px-2 py-1 rounded-md my-1"
                         >
-                            🖋️
+                            Editar
                         </button>
                         <button
                             onclick={() => ((userModel.showDeleteModal(user)))}
                             aria-label="Eliminar"
-                            class="bg-red-600 text-white px-3 py-2 rounded-md my-1"
+                            class="bg-red-600 text-white px-2 py-1 rounded-md my-1"
                         >
-                            🗑
+                            Eliminar
                         </button>
                     </div>
                 </td>
@@ -58,3 +59,5 @@
         {/each}
     </tbody>
 </table>
+
+<Pagination model={userModel} />

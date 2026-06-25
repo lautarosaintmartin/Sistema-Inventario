@@ -16,10 +16,10 @@
 
 <div class = "w-full flex justify-end mb-4">
     <button 
-        class = "bg-gray-800 text-xl text-white rounded-md px-2 py-1 border border-white"
+        class = "bg-gray-800 text-white rounded-md px-2 py-1 border border-white"
         onclick={(e) => providerModel.showCreateModal()}
     >
-        ➕
+        Agregar proveedor
     </button>
 </div>
 
@@ -43,16 +43,16 @@
                         <button
                             onclick={() => ((providerModel.showEditModal(provider)))}
                             aria-label="Editar"
-                            class="bg-gray-800 text-white px-3 py-2 rounded-md my-1"
+                            class="bg-gray-800 text-white px-2 py-1 rounded-md my-1"
                         >
-                            🖋️
+                            Editar
                         </button>
                         <button
                             onclick={() => ((providerModel.showDeleteModal(provider)))}
                             aria-label="Eliminar"
-                            class="bg-red-600 text-white px-3 py-2 rounded-md my-1"
+                            class="bg-red-600 text-white px-2 py-1 rounded-md my-1"
                         >
-                            🗑
+                            Eliminar
                         </button>
                     </div>
                 </td>

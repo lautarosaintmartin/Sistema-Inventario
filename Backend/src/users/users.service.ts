@@ -3,6 +3,10 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { hashSync } from 'bcrypt'
+import { PaginationDto } from '../commons/pagination.dto';
+
+const DEFAULT_LIMIT = 5
+const DEFAULT_PAGE = 1
 
 @Injectable()
 export class UsersService {
@@ -38,16 +42,30 @@ export class UsersService {
     }
   }
 
-  async findAll() {
+  async findAll(paginationDto: PaginationDto) {
     try {
+
+      const count = await this.prismaService.user.count()
       const users = await this.prismaService.user.findMany({
         orderBy: {
           fullname: "asc",
         },
+        skip: (paginationDto.page || DEFAULT_PAGE) * (paginationDto.limit || DEFAULT_LIMIT) - (paginationDto.limit || DEFAULT_LIMIT),
+        take: paginationDto.limit || DEFAULT_LIMIT,
       });
      
-      return users
-      // return await this.prismaService.user.findMany();
+      return{
+        data: users,
+        pagination: {
+          totalItems: count,
+          page: paginationDto.page || DEFAULT_PAGE,
+          limit: paginationDto.limit || DEFAULT_LIMIT,
+          totalPages: Math.ceil(count / (paginationDto.limit || DEFAULT_LIMIT)),
+          nextPage: paginationDto.page || DEFAULT_PAGE + 1,
+          previousPage: paginationDto.page || DEFAULT_PAGE - 1
+        }
+      }
+    
     } catch (error) {
       console.log(error)
       throw error

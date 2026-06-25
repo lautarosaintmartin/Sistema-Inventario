@@ -1,4 +1,5 @@
 import { http } from '@core/http'
+import type { Pagination } from '@core/interfaces/response';
 import { handleErrorToast } from '@core/utils/toast';
 
 interface User {
@@ -13,9 +14,17 @@ class UserModel {
     deleteDialog = $state(false)
     editDialog = $state(false)
     createDialog = $state(false)
+    pagination = $state<Pagination | null>(null)
+    query = $state<Pick<Pagination, 'page' | 'limit'>>({
+        page: 1,
+        limit: 5,
+    })
 
     async getUsers() {
-        this.users = await http.get(`${import.meta.env.PUBLIC_API_URL}/users`);
+        const res: any = await http.get(`${import.meta.env.PUBLIC_API_URL}/users?page=${this.query.page}&limit=${this.query.limit}`);
+
+        this.users = res.data
+        this.pagination = res.pagination
     }
 
     async deleteUser(id: number) {
@@ -51,6 +60,19 @@ class UserModel {
             handleErrorToast(error)
         }
     }
+
+    async nextPage() {
+        if (!this.pagination) return
+        this.query.page++
+        await this.getUsers()
+    }
+
+    async previousPage() {
+        if (this.query.page <= 1) return
+        this.query.page--
+        await this.getUsers()
+    }
+
 
     showCreateModal() {
         this.user = null
